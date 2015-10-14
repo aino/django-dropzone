@@ -30,7 +30,7 @@ class DropZoneFileField(ArrayField):
     base_field = models.FileField
 
     def __init__(self, base_field=None, size=None, null=False, default=[], *args, **kwargs):
-        base_field = self.base_field(*args, **kwargs)
+        base_field = base_field or self.base_field(*args, **kwargs)
         super(DropZoneFileField, self).__init__(base_field, size=size, null=null, default=default)
 
     def formfield(self, **kwargs):

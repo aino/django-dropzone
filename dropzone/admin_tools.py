@@ -4,7 +4,6 @@ from django.conf.urls import url
 from django.core.exceptions import FieldDoesNotExist
 from django.core.exceptions import FieldError
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from dropzone.fields import DropZoneFileField
 from dropzone.models import TmpFile
@@ -14,15 +13,11 @@ from functools import update_wrapper
 class DropZoneAdminMixin(object):
 
     @csrf_exempt
-    def dropzone_upload(self, request, pk=None):
+    def dropzone_upload(self, request, object_id=None):
         """
         Handle the uploaded files and save to tmp file db if no object is
         created
         """
-        if pk is None:
-            obj = None
-        else:
-            obj = get_object_or_404(self.model, pk=pk)
         for fieldname, content in request.FILES.items():
             try:
                 dropzonefield = self.model._meta.get_field(fieldname)
@@ -36,19 +31,14 @@ class DropZoneAdminMixin(object):
             DropZoneForm = type('DropZoneForm', (forms.Form,), attrs)
             form = DropZoneForm(files=request.FILES)
             if form.is_valid():
-                if obj:
-                    self.save_dropzone_file(filefield, content, obj, fieldname)
-                else:
-                    TmpFile.objects.create(
-                        user=request.user,
-                        app=self.model._meta.app_label,
-                        model=self.model.__name__,
-                        field=fieldname,
-                        name=content.name,
-                        data=content.read(),
-                    )
-        if obj:
-            obj.save()
+                TmpFile.objects.create(
+                    user=request.user,
+                    app=self.model._meta.app_label,
+                    model=self.model.__name__,
+                    field=fieldname,
+                    name=content.name,
+                    data=content.read(),
+                )
         return HttpResponse()
 
     def save_dropzone_file(self, filefield, content, obj, fieldname):
@@ -66,30 +56,22 @@ class DropZoneAdminMixin(object):
         setattr(obj, fieldname, data)
 
     def save_model(self, request, obj, form, change):
-        if not obj.pk:
-            params = {
-                'user': request.user,
-                'app': self.model._meta.app_label,
-                'model': self.model.__name__,
-            }
-            for tmp in TmpFile.objects.filter(**params):
-                try:
-                    dropzonefield = self.model._meta.get_field(tmp.field)
-                except FieldDoesNotExist:
-                    continue
-                if not isinstance(dropzonefield, DropZoneFileField):
-                    continue
-                filefield = dropzonefield.base_field
-                self.save_dropzone_file(filefield, tmp.content, obj, tmp.field)
+        params = {
+            'user': request.user,
+            'app': self.model._meta.app_label,
+            'model': self.model.__name__,
+        }
+        for tmp in TmpFile.objects.filter(**params):
+            try:
+                dropzonefield = self.model._meta.get_field(tmp.field)
+            except FieldDoesNotExist:
+                continue
+            if not isinstance(dropzonefield, DropZoneFileField):
+                continue
+            filefield = dropzonefield.base_field
+            self.save_dropzone_file(filefield, tmp.content, obj, tmp.field)
         TmpFile.objects.filter(user=request.user).delete()
-        obj.save()
-
-    def changelist_view(self, request, *args, **kwargs):
-        """
-        Just to empty tmp files
-        """
-        TmpFile.objects.filter(user=request.user).delete()
-        return super(DropZoneAdminMixin, self).changelist_view(request, *args, **kwargs)
+        super(DropZoneAdminMixin, self).save_model(request, obj, form, change)
 
     def render_change_form(self, request, *args, **kwargs):
         """
@@ -101,21 +83,19 @@ class DropZoneAdminMixin(object):
 
     def get_urls(self):
         """
-        Add urls for new objects and existing
+        Add urls for the dropzone upload
         """
-        urlpatterns = super(DropZoneAdminMixin, self).get_urls()
-
         def wrap(view):
             def wrapper(*args, **kwargs):
                 return self.admin_site.admin_view(view)(*args, **kwargs)
             wrapper.model_admin = self
             return update_wrapper(wrapper, view)
 
+        urlpatterns = super(DropZoneAdminMixin, self).get_urls()
         for field_name in self.model._meta.get_all_field_names():
             field = self.model._meta.get_field(field_name)
             if isinstance(field, DropZoneFileField):
-                urlpatterns = [
-                    url(r'^add/dropzone/$', wrap(self.dropzone_upload)),
+                return [
                     url(r'^(.+)/dropzone/$', wrap(self.dropzone_upload)),
                 ] + urlpatterns
         return urlpatterns

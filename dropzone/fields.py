@@ -10,7 +10,7 @@ from django.core.exceptions import FieldError
 class DropZoneWidget(Widget):
     class Media:
         css = {
-            'all': ('dropzone/dropzone.css',)
+            'all': ('dropzone/dropzone.css','dropzone/django-dropzone.css')
         }
         js = ('dropzone/dropzone.js',)
 
@@ -19,7 +19,7 @@ class DropZoneWidget(Widget):
             value = ''
         final_attrs = self.build_attrs(attrs, name=name)
         return mark_safe(
-            '<br><div%s style="height:1000px"></div><script>var ds = new Dropzone("#%s", {url: "dropzone/", paramName: "%s"});</script>' % (
+            '<div%s class="dropzone"></div><script>var ds = new Dropzone("#%s", {url: "dropzone/", paramName: "%s"});</script>' % (
                 flatatt(final_attrs),
                 final_attrs['id'],
                 name,

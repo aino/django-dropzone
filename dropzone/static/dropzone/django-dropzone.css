@@ -1,0 +1,50 @@
+.dropzone .dz-clickable {
+  border: 1px solid #eee;
+  background-color: #FDFDFD;
+  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto; }
+
+.dropzone .dz-drag-hover {
+  box-shadow: 0 0 2px 3px #D3EBFF inset, 0 0 2px 2px #7FBDEF;
+  background-color: #e4f0f9; }
+
+.dropzone .dz-preview {
+  width: 120px;
+  height: 120px;
+  margin: 2px;
+  float: left;
+  border: 1px solid #eee;
+  background: #fff;
+  position: relative;
+  border-radius: 3px; }
+  .dropzone .dz-preview .dz-image {
+    height: 60%;
+    overflow: hidden;
+    text-align: center; }
+    .dropzone .dz-preview .dz-image img {
+      max-width: 100%;
+      min-width: 20%; }
+  .dropzone .dz-preview .dz-details {
+    padding: 5px;
+    font-size: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: #969696; }
+    .dropzone .dz-preview .dz-details .dz-size {
+      float: right;
+      padding-left: 5px; }
+  .dropzone .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark {
+    position: absolute;
+    top: 10px; }
+    .dropzone .dz-preview .dz-success-mark svg, .dropzone .dz-preview .dz-error-mark svg {
+      width: 20px;
+      height: 20px; }
+  .dropzone .dz-preview .dz-success-mark {
+    right: 10px; }
+  .dropzone .dz-preview .dz-error-mark {
+    right: 40px; }
+
+/*# sourceMappingURL=django-dropzone.css.map */

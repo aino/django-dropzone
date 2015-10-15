@@ -31,7 +31,7 @@ class DropZoneAdminMixin(object):
                 TmpFile.objects.create(
                     user=request.user,
                     app=self.model._meta.app_label,
-                    model=self.model.__name__,
+                    model=self.model._meta.object_name,
                     field=fieldname,
                     name=content.name,
                     data=content.read(),
@@ -42,7 +42,7 @@ class DropZoneAdminMixin(object):
         params = {
             'user': request.user,
             'app': self.model._meta.app_label,
-            'model': self.model.__name__,
+            'model': self.model._meta.object_name,
         }
         for tmp in TmpFile.objects.filter(**params):
             try:

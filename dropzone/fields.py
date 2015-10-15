@@ -4,6 +4,7 @@ from django.forms import Widget
 from django.forms.utils import flatatt
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
+from django.core.exceptions import FieldError
 
 
 class DropZoneWidget(Widget):
@@ -29,9 +30,11 @@ class DropZoneWidget(Widget):
 class DropZoneFileField(ArrayField):
     base_field = models.FileField
 
-    def __init__(self, base_field=None, size=None, null=False, default=[], *args, **kwargs):
+    def __init__(self, base_field=None, size=None, blank=True, null=False, default=[], *args, **kwargs):
+        if 'upload_to' in kwargs and callable(kwargs['upload_to']):
+            raise FieldError('`upload_to` cannot be a callable')
         base_field = base_field or self.base_field(*args, **kwargs)
-        super(DropZoneFileField, self).__init__(base_field, size=size, null=null, default=default)
+        super(DropZoneFileField, self).__init__(base_field, size=size, blank=blank, null=null, default=default)
 
     def formfield(self, **kwargs):
         defaults = {'widget': DropZoneWidget}

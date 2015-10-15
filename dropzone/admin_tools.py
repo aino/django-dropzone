@@ -74,8 +74,7 @@ class DropZoneAdminMixin(object):
             return update_wrapper(wrapper, view)
 
         urlpatterns = super(DropZoneAdminMixin, self).get_urls()
-        for field_name in self.model._meta.get_all_field_names():
-            field = self.model._meta.get_field(field_name)
+        for field in self.model._meta.fields:
             if isinstance(field, DropZoneFileField):
                 return [
                     url(r'^(.+)/dropzone/$', wrap(self.dropzone_upload)),

@@ -14,3 +14,15 @@ class TmpFile(models.Model):
     @property
     def content(self):
         return ContentFile(self.data, self.name)
+
+    def write_and_append(self, filefield, obj):
+        """
+        Writes the the stored data to filename generated from
+        filefield, then appends that filename to the model instance
+        dropzone field.
+        """
+        name = filefield.generate_filename(obj, self.name)
+        filename = filefield.storage.save(name, self.content, max_length=filefield.max_length)
+        data = getattr(obj, self.field) or []
+        data.append(filename)
+        setattr(obj, self.field, data)

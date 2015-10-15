@@ -1,8 +1,6 @@
-import os
 from django import forms
 from django.conf.urls import url
 from django.core.exceptions import FieldDoesNotExist
-from django.core.exceptions import FieldError
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from dropzone.fields import DropZoneFileField
@@ -15,8 +13,7 @@ class DropZoneAdminMixin(object):
     @csrf_exempt
     def dropzone_upload(self, request, object_id=None):
         """
-        Handle the uploaded files and save to tmp file db if no object is
-        created
+        Handle the uploaded files and save to tmp file db store
         """
         for fieldname, content in request.FILES.items():
             try:
@@ -41,20 +38,6 @@ class DropZoneAdminMixin(object):
                 )
         return HttpResponse()
 
-    def save_dropzone_file(self, filefield, content, obj, fieldname):
-        """
-        Save the contents in the using filefields upload_to attibute and then
-        append the filenames to the objects fieldname attribute (the dropzone
-        field)
-        """
-        if callable(filefield.upload_to):
-            raise FieldError('`upload_to` cannot be a callable')
-        filename = os.path.join(filefield.get_directory_name(), filefield.get_filename(content.name))
-        filename = filefield.storage.save(filename, content, max_length=filefield.max_length)
-        data = getattr(obj, fieldname) or []
-        data.append(filename)
-        setattr(obj, fieldname, data)
-
     def save_model(self, request, obj, form, change):
         params = {
             'user': request.user,
@@ -68,8 +51,7 @@ class DropZoneAdminMixin(object):
                 continue
             if not isinstance(dropzonefield, DropZoneFileField):
                 continue
-            filefield = dropzonefield.base_field
-            self.save_dropzone_file(filefield, tmp.content, obj, tmp.field)
+            tmp.write_and_append(dropzonefield.base_field, obj)
         TmpFile.objects.filter(user=request.user).delete()
         super(DropZoneAdminMixin, self).save_model(request, obj, form, change)
 

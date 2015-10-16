@@ -65,7 +65,7 @@
         border-bottom-right-radius: 3px; }
         .dropzone .dz-preview .dz-details .dz-filename:hover span {
           margin-left: 4px;
-          background-color: #000;
+          background-color: rgba(0, 0, 0, 0.5);
           border: 0; }
         .dropzone .dz-preview .dz-details .dz-filename span {
           background-color: transparent; }

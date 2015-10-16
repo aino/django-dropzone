@@ -17,7 +17,7 @@ class DropZoneAdminMixin(object):
         """
         for fieldname, content in request.FILES.items():
             try:
-                dropzonefield = self.model._meta.get_field(fieldname)
+                dropzonefield = self.opts.get_field(fieldname)
             except FieldDoesNotExist:
                 return HttpResponse(status=403)
             if not isinstance(dropzonefield, DropZoneFileField):
@@ -30,8 +30,8 @@ class DropZoneAdminMixin(object):
             if form.is_valid():
                 TmpFile.objects.create(
                     user=request.user,
-                    app=self.model._meta.app_label,
-                    model=self.model.__name__,
+                    app=self.opts.app_label,
+                    model=self.opts.object_name,
                     field=fieldname,
                     name=content.name,
                     data=content.read(),
@@ -41,12 +41,12 @@ class DropZoneAdminMixin(object):
     def save_model(self, request, obj, form, change):
         params = {
             'user': request.user,
-            'app': self.model._meta.app_label,
-            'model': self.model.__name__,
+            'app': self.opts.app_label,
+            'model': self.opts.object_name,
         }
         for tmp in TmpFile.objects.filter(**params):
             try:
-                dropzonefield = self.model._meta.get_field(tmp.field)
+                dropzonefield = self.opts.get_field(tmp.field)
             except FieldDoesNotExist:
                 continue
             if not isinstance(dropzonefield, DropZoneFileField):
@@ -74,8 +74,7 @@ class DropZoneAdminMixin(object):
             return update_wrapper(wrapper, view)
 
         urlpatterns = super(DropZoneAdminMixin, self).get_urls()
-        for field_name in self.model._meta.get_all_field_names():
-            field = self.model._meta.get_field(field_name)
+        for field in self.opts.fields:
             if isinstance(field, DropZoneFileField):
                 return [
                     url(r'^(.+)/dropzone/$', wrap(self.dropzone_upload)),

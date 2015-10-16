@@ -30,7 +30,20 @@
     border-radius: 3px;
     box-sizing: content-box;
 
+    &.dz-image-preview {
+      .dz-image, .dz-details {
+       -webkit-transition: none;
+       -moz-transition: none;
+       -ms-transition: none;
+       -o-transition: none;
+       transition: none;
+      }
+    }
+
+
     &:hover {
+      border-color: #adadad;
+
       .dz-image {
         img {
           -webkit-transform: scale(1, 1);
@@ -65,6 +78,7 @@
       left: 0;
       right: 0;
       color: #000;
+      transition: none;
 
       .dz-filename {
         border-radius: 0px;
@@ -74,7 +88,7 @@
         left: 0;
         color: #fff;
         padding: 5px 2px;
-        background-color: rgba(0,0,0,0.8);
+        background-color: rgba(0,0,0,0.5);
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px;
 
@@ -103,7 +117,7 @@
           padding: 3px 5px;
           border-top-right-radius: 0;
           border-bottom-right-radius: 0;
-          background-color: rgba(0,0,0,0.7);
+          background-color: rgba(0,0,0,0.5);
         }
       }
     }

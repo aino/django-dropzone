@@ -2,75 +2,136 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Drop zone
 .dropzone {
-    .dz-clickable {
-        // box-shadow: 0 0 3px 1px rgba(0,0,0,0.05) inset;
-        border: 1px solid #eee;
-        background-color: #FDFDFD;
-        padding: 20px;
-        overflow-x: hidden;
-        overflow-y: auto;
+  width: 74em;
+  display: inline-block;
+
+  &.dz-clickable {
+    // box-shadow: 0 0 3px 1px rgba(0,0,0,0.05) inset;
+    border: 1px solid #eee;
+    background-color: #FDFDFD;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  &.dz-drag-hover {
+    box-shadow: 0 0 2px 3px #D3EBFF inset, 0 0 2px 2px #7FBDEF;
+    background-color: #e4f0f9;
+    // border: 3px solid blue;
+  }
+
+  .dz-preview {
+    width: 120px;
+    height: 120px;
+    margin: 2px;
+    float: left;
+    border: 1px solid #eee;
+    background: #fff;
+    position: relative;
+    border-radius: 3px;
+    box-sizing: content-box;
+
+    &:hover {
+      .dz-image {
+        img {
+          -webkit-transform: scale(1, 1);
+          -moz-transform: scale(1, 1);
+          -ms-transform: scale(1, 1);
+          -o-transform: scale(1, 1);
+          transform: scale(1, 1);
+          -webkit-filter: blur(0px);
+          filter: blur(0px);
+        }
+      }
     }
-    .dz-drag-hover {
-        box-shadow: 0 0 2px 3px #D3EBFF inset, 0 0 2px 2px #7FBDEF;
-        background-color: #e4f0f9;
-        // border: 3px solid blue;
+
+    .dz-image {
+      overflow: hidden;
+      text-align: center;
+      border-radius: 3px;
+
+      img {
+        max-width: 100%;
+        min-width: 20%;
+      }
     }
-    .dz-preview {
-        width: 120px;
-        height: 120px;
-        margin: 2px;
-        float: left;
-        border: 1px solid #eee;
-        background: #fff;
-        position: relative;
-        border-radius: 3px;
 
-        .dz-image {
-            height: 60%;
-            overflow: hidden;
-            text-align: center;
 
-            img {
-                max-width: 100%;
-                min-width: 20%;
-            }
+
+    .dz-details {
+      padding: 5px;
+      font-size: 10px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      color: #000;
+
+      .dz-filename {
+        border-radius: 0px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        color: #fff;
+        padding: 5px 2px;
+        background-color: rgba(0,0,0,0.8);
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+
+        &:hover {
+          span {
+            margin-left: 4px;
+            background-color: #000;
+            border: 0;
+          }
         }
-
-        .dz-details {
-            padding: 5px;
-            font-size: 10px;
-            // font-family: $font-main;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            color: #969696;
-            // border-top: 1px solid #FBFBFB;
-            // border-top: 1px solid #eee;
-            // background-color: #FBFBFB;
-
-            .dz-size {
-                float: right;
-                padding-left: 5px;
-            }
+        span {
+          // display: block;
+          background-color: transparent;
         }
+      }
 
-        .dz-success-mark, .dz-error-mark {
-            position: absolute;
-            top: 10px;
+      .dz-size {
+        // float: right;
+        position: absolute;
+        right: 0;
+        padding-left: 5px;
+        font-size: 12px;
 
-            svg {
-                width: 20px;
-                height: 20px;
-            }
+        span {
+          color: #fff;
+          padding: 3px 5px;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+          background-color: rgba(0,0,0,0.7);
         }
-
-        .dz-success-mark {
-            right: 10px;
-        }
-
-        .dz-error-mark {
-            right: 40px;
-        }
+      }
     }
+
+    .dz-success-mark {
+      svg {
+        path {
+          fill: rgba(145, 255, 145, 1);
+        }
+      }
+    }
+
+    .dz-error-mark {
+      svg {
+        path {
+          fill: rgba(251, 136, 152, 1);
+        }
+      }
+    }
+  }
+
+  .dz-message {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #797979;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
 }

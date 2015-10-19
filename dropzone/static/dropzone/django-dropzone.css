@@ -1,12 +1,11 @@
 .dropzone {
   width: 74em;
-  display: inline-block; }
+  display: inline-block;
+  position: relative; }
   .dropzone.dz-clickable {
     border: 1px solid #eee;
     background-color: #FDFDFD;
-    padding: 20px;
-    overflow-x: hidden;
-    overflow-y: auto; }
+    padding: 20px; }
   .dropzone.dz-drag-hover {
     box-shadow: 0 0 2px 3px #D3EBFF inset, 0 0 2px 2px #7FBDEF;
     background-color: #e4f0f9; }
@@ -20,12 +19,6 @@
     position: relative;
     border-radius: 3px;
     box-sizing: content-box; }
-    .dropzone .dz-preview.dz-image-preview .dz-image, .dropzone .dz-preview.dz-image-preview .dz-details {
-      -webkit-transition: none;
-      -moz-transition: none;
-      -ms-transition: none;
-      -o-transition: none;
-      transition: none; }
     .dropzone .dz-preview:hover {
       border-color: #adadad; }
       .dropzone .dz-preview:hover .dz-image img {
@@ -36,6 +29,12 @@
         transform: scale(1, 1);
         -webkit-filter: blur(0px);
         filter: blur(0px); }
+    .dropzone .dz-preview.dz-image-preview .dz-image, .dropzone .dz-preview.dz-image-preview .dz-details {
+      -webkit-transition: none;
+      -moz-transition: none;
+      -ms-transition: none;
+      -o-transition: none;
+      transition: none; }
     .dropzone .dz-preview .dz-image {
       overflow: hidden;
       text-align: center;
@@ -59,13 +58,13 @@
         right: 0;
         left: 0;
         color: #fff;
-        padding: 5px 2px;
+        padding: 5px 0px;
         background-color: rgba(0, 0, 0, 0.5);
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px; }
         .dropzone .dz-preview .dz-details .dz-filename:hover span {
-          margin-left: 4px;
-          background-color: rgba(0, 0, 0, 0.5);
+          margin-left: 3px;
+          background-color: rgba(0, 0, 0, 0.4);
           border: 0; }
         .dropzone .dz-preview .dz-details .dz-filename span {
           background-color: transparent; }
@@ -90,6 +89,7 @@
     color: #797979;
     position: absolute;
     left: 50%;
+    margin: 0;
     top: 50%;
     transform: translate(-50%, -50%); }
 

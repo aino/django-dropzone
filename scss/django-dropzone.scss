@@ -4,14 +4,13 @@
 .dropzone {
   width: 74em;
   display: inline-block;
+  position: relative;
 
   &.dz-clickable {
     // box-shadow: 0 0 3px 1px rgba(0,0,0,0.05) inset;
     border: 1px solid #eee;
     background-color: #FDFDFD;
     padding: 20px;
-    overflow-x: hidden;
-    overflow-y: auto;
   }
   &.dz-drag-hover {
     box-shadow: 0 0 2px 3px #D3EBFF inset, 0 0 2px 2px #7FBDEF;
@@ -30,17 +29,6 @@
     border-radius: 3px;
     box-sizing: content-box;
 
-    &.dz-image-preview {
-      .dz-image, .dz-details {
-       -webkit-transition: none;
-       -moz-transition: none;
-       -ms-transition: none;
-       -o-transition: none;
-       transition: none;
-      }
-    }
-
-
     &:hover {
       border-color: #adadad;
 
@@ -54,6 +42,16 @@
           -webkit-filter: blur(0px);
           filter: blur(0px);
         }
+      }
+    }
+
+    &.dz-image-preview {
+      .dz-image, .dz-details {
+       -webkit-transition: none;
+       -moz-transition: none;
+       -ms-transition: none;
+       -o-transition: none;
+       transition: none;
       }
     }
 
@@ -87,15 +85,15 @@
         right: 0;
         left: 0;
         color: #fff;
-        padding: 5px 2px;
+        padding: 5px 0px;
         background-color: rgba(0,0,0,0.5);
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px;
 
         &:hover {
           span {
-            margin-left: 4px;
-            background-color: rgba(0,0,0,0.5);
+            margin-left: 3px;
+            background-color: rgba(0,0,0,0.4);
             border: 0;
           }
         }
@@ -145,6 +143,7 @@
     color: #797979;
     position: absolute;
     left: 50%;
+    margin: 0;
     top: 50%;
     transform: translate(-50%,-50%);
   }

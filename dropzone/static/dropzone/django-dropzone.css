@@ -1,11 +1,13 @@
 .dropzone {
-  width: 74em;
+  max-width: 74em;
+  width: 100%;
+  min-width: 500px;
   display: inline-block;
   position: relative; }
   .dropzone.dz-clickable {
     border: 1px solid #eee;
     background-color: #FDFDFD;
-    padding: 20px; }
+    padding: 12px; }
   .dropzone.dz-drag-hover {
     box-shadow: 0 0 2px 3px #D3EBFF inset, 0 0 2px 2px #7FBDEF;
     background-color: #e4f0f9; }

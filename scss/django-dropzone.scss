@@ -2,7 +2,9 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Drop zone
 .dropzone {
-  width: 74em;
+  max-width: 74em;
+  width: 100%;
+  min-width: 500px;
   display: inline-block;
   position: relative;
 
@@ -10,7 +12,7 @@
     // box-shadow: 0 0 3px 1px rgba(0,0,0,0.05) inset;
     border: 1px solid #eee;
     background-color: #FDFDFD;
-    padding: 20px;
+    padding: 12px;
   }
   &.dz-drag-hover {
     box-shadow: 0 0 2px 3px #D3EBFF inset, 0 0 2px 2px #7FBDEF;
